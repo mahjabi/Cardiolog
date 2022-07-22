@@ -104,7 +104,7 @@
                 android:layout_width="127dp"
                 android:layout_height="49dp"
                 android:layout_marginLeft="10dp"
-             android:focusable="false"
+                android:focusable="false"
                 android:layout_marginTop="30dp"
                 android:background="@drawable/custom_input"
                 android:hint="Time"
@@ -130,12 +130,23 @@
             android:layout_width="242dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="36dp"
-            android:layout_marginBottom="50dp"
-            android:text="ADD"
+            android:text="Update"
             android:textColor="#FFFFFF"
             android:textColorHint="#FFFFFF"
+            android:textSize="16sp"
             app:backgroundTint="#616060" />
 
+        <Button
+            android:id="@+id/del_btn"
+            android:layout_width="242dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="50dp"
+            android:text="Delete"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#FFFFFF"
+            android:textSize="16sp"
+            app:backgroundTint="#970E0E" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

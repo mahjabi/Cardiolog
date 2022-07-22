@@ -24,15 +24,18 @@ import android.widget.Toast;
 import java.util.Calendar;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import com.app.cardiolog.MainActivity;
+import com.app.cardiolog.Adapter.CardiologAdapter;
+import com.app.cardiolog.HistoryActivity;
 import com.app.cardiolog.MyDBHelper;
 import com.app.cardiolog.R;
 
 import java.text.SimpleDateFormat;
 
-public class DialogFragment extends android.app.DialogFragment {
-    private static final String TAG = "DialogFragment";
+public class Updatefragment extends android.app.DialogFragment {
+    private static final String TAG = "UpdateFragment";
     public  Context thiscontext;
 
     public interface OnInputListener {
@@ -41,8 +44,8 @@ public class DialogFragment extends android.app.DialogFragment {
     public OnInputListener mOnInputListener;
 
     EditText sysInput,diaInput,bpmInput,commentInput,Date,Time;
-    Button mButton;
-TextView comIn;
+    Button mButton,delbtn;
+    TextView comIn;
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Nullable
     @Override
@@ -52,24 +55,35 @@ TextView comIn;
         thiscontext= this.getContext();
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-        View v= inflater.inflate(R.layout.inputfragment,container,false);
+        View v= inflater.inflate(R.layout.updatefragment,container,false);
         sysInput=v.findViewById(R.id.systolic);
         diaInput=v.findViewById(R.id.diastolic);
         bpmInput=v.findViewById(R.id.bpm_in);
         commentInput=v.findViewById(R.id.comment_in);
         mButton=v.findViewById(R.id.update_btn);
+        delbtn=v.findViewById(R.id.del_btn);
         Date=v.findViewById(R.id.date);
         Time=v.findViewById(R.id.time);
- comIn=v.findViewById(R.id.comment_m);
+        comIn=v.findViewById(R.id.comment_m);
 
         Date.setInputType(InputType.TYPE_NULL);
         Time.setInputType(InputType.TYPE_NULL);
 
-        Bundle bundle =new Bundle();
-        bundle.putInt("sysval",sysInput.getInputType());
-        bundle.putInt("diaval",diaInput.getInputType());
-        bundle.putInt("bpmval",bpmInput.getInputType());
-        bundle.putString("commentval",commentInput.getText().toString());
+        Bundle bundle =getArguments();
+        String sys= bundle.getString("sysval");
+        String dia = bundle.getString("diaval");
+        String bpm = bundle.getString("bpm");
+        String comment = bundle.getString("comment");
+        String dateval = bundle.getString("date");
+        String timeval = bundle.getString("time");
+        String id= bundle.getString("id");
+        diaInput.setText(dia);
+        sysInput.setText(sys);
+        bpmInput.setText(bpm);
+        commentInput.setText(comment);
+        Date.setText(dateval);
+        Time.setText(timeval);
+
 
 
         Date.setOnClickListener(new View.OnClickListener() {
@@ -89,39 +103,62 @@ TextView comIn;
         });
 
 
+       delbtn.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View view) {
+               MyDBHelper mydb = new MyDBHelper(thiscontext);
 
+               mydb.deleteOneRow(id);
+
+
+               Intent intent= new Intent(thiscontext,HistoryActivity.class);
+               startActivity(intent);
+               getDialog().dismiss();
+           }
+       });
 
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                if(TextUtils.isEmpty(sysInput.getText().toString().trim())||TextUtils.isEmpty(diaInput.getText().toString().trim())||TextUtils.isEmpty(bpmInput.getText().toString().trim())||TextUtils.isEmpty(Date.getText().toString().trim())||TextUtils.isEmpty(Time.getText().toString().trim()))
-                {
+                        int sysval,diaval,bpmval;
+                        String date,time;
                     if(TextUtils.isEmpty(sysInput.getText().toString().trim())){
-                        Toast.makeText(thiscontext,"Systolic Pressure Field is Required",Toast.LENGTH_LONG).show();
+                      sysval = Integer.parseInt(sys);
+                    }
+                    else{
+                         sysval = Integer.parseInt(sysInput.getText().toString());
                     }
                     if(TextUtils.isEmpty(diaInput.getText().toString().trim())){
-                        Toast.makeText(thiscontext,"Diastolic Pressure Field is Required",Toast.LENGTH_LONG).show();
+                       diaval=Integer.parseInt(dia);
+                    }
+                    else{
+                        diaval=Integer.parseInt(diaInput.getText().toString());
                     }
                     if(TextUtils.isEmpty(bpmInput.getText().toString().trim())){
-                        Toast.makeText(thiscontext,"Beats Per Minute Field is Required",Toast.LENGTH_LONG).show();
+                       bpmval=Integer.parseInt(bpm);
+                    }
+                    else{
+                     bpmval=Integer.parseInt(bpmInput.getText().toString());
                     }
                     if(TextUtils.isEmpty(Date.getText().toString().trim())){
-                        Toast.makeText(thiscontext,"Date Field is Required",Toast.LENGTH_LONG).show();
+                      date=dateval;
+                    }
+                    else{
+                        date = Date.getText().toString();
                     }
                     if(TextUtils.isEmpty(Time.getText().toString().trim())){
-                    Toast.makeText(thiscontext,"Time Field is Required",Toast.LENGTH_LONG).show();
-                }
-                }
+                     time = timeval;
+                    }
+                    else{
+                         time = Time.getText().toString();
+                    }
 
-                else {
-                    int sysval = Integer.parseInt(sysInput.getText().toString());
-                    int diaval=Integer.parseInt(diaInput.getText().toString());
-                    int bpmval =Integer.parseInt(bpmInput.getText().toString());
+
                     String com = null;
-                    String dateval = Date.getText().toString();
-                    String timeval = Time.getText().toString();
-                    if(TextUtils.isEmpty(commentInput.getText().toString().trim())){
+
+
+                    if(comment.equals(commentInput.getText().toString())){
 
                         if((sysval>=90 && sysval<140) && (diaval>=60 && diaval<=90 )){
                             com="Normal";
@@ -145,15 +182,19 @@ TextView comIn;
                         com=commentInput.getText().toString();
                     }
                     MyDBHelper mydb = new MyDBHelper(thiscontext);
-                    mydb.addRecord(sysval,diaval,bpmval,dateval,timeval,com);
 
-                    //mOnInputListener.sendInput(sysval,diaval,com);
-                    getDialog().dismiss();
+                  mydb.updateData(id,sysval,diaval,bpmval,date,com,time);
+
+
+                    Intent intent= new Intent(thiscontext,HistoryActivity.class);
+                    startActivity(intent);
+                getDialog().dismiss();
+
                 }
 
 
             }
-        });
+        );
 
         return v;
     }
@@ -192,5 +233,8 @@ TextView comIn;
 
 
 
-
 }
+
+
+
+
