@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/updatefragment"
+    android:id="@+id/inputfragment"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
 
@@ -126,7 +126,7 @@
             android:textAlignment="center" />
 
         <Button
-            android:id="@+id/update_btn"
+            android:id="@+id/input_btn"
             android:layout_width="242dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="36dp"

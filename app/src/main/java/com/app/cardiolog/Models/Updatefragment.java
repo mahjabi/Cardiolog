@@ -33,12 +33,21 @@ import com.app.cardiolog.MyDBHelper;
 import com.app.cardiolog.R;
 
 import java.text.SimpleDateFormat;
-
+/**
+ * class for updating fragment
+ */
 public class Updatefragment extends android.app.DialogFragment {
     private static final String TAG = "UpdateFragment";
     public  Context thiscontext;
 
     public interface OnInputListener {
+        /**
+         * this is for showing users what input the app already has
+         * @param sysval
+         * @param diaval
+         * @param bpm
+         * @param comment
+         */
         void sendInput(int sysval,int diaval,int bpm,String comment);
     }
     public OnInputListener mOnInputListener;
@@ -50,6 +59,9 @@ public class Updatefragment extends android.app.DialogFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+        /**
+         * this is where we edit the fragment input to update the data
+         */
         super.onCreateView(inflater, container, savedInstanceState);
 
         thiscontext= this.getContext();
@@ -87,6 +99,10 @@ public class Updatefragment extends android.app.DialogFragment {
 
 
         Date.setOnClickListener(new View.OnClickListener() {
+            /**
+             * show data dialog
+             * @param view
+             */
             @Override
             public void onClick(View view) {
                 showDateDialog(Date);
@@ -96,7 +112,11 @@ public class Updatefragment extends android.app.DialogFragment {
         });
 
         Time.setOnClickListener(new View.OnClickListener() {
-            @Override
+
+            /**
+             * show time dialog
+             * @param view
+             */ @Override
             public void onClick(View view) {
                 showTimeDialog(Time);
             }
@@ -104,6 +124,10 @@ public class Updatefragment extends android.app.DialogFragment {
 
 
        delbtn.setOnClickListener(new View.OnClickListener() {
+           /**
+            * click listener to delete a row and change intent
+            * @param view
+            */
            @Override
            public void onClick(View view) {
                MyDBHelper mydb = new MyDBHelper(thiscontext);
@@ -118,6 +142,10 @@ public class Updatefragment extends android.app.DialogFragment {
        });
 
         mButton.setOnClickListener(new View.OnClickListener() {
+            /**
+             * check the inputs of user
+             * @param view
+             */
             @Override
             public void onClick(View view) {
 
@@ -201,6 +229,9 @@ public class Updatefragment extends android.app.DialogFragment {
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void showTimeDialog(EditText time) {
+        /**
+         * showing time dialog
+         */
         Calendar calendar= Calendar.getInstance();
         TimePickerDialog.OnTimeSetListener timeSetListener=new TimePickerDialog.OnTimeSetListener() {
             @Override
@@ -216,6 +247,9 @@ public class Updatefragment extends android.app.DialogFragment {
 
 
     private void showDateDialog(EditText date) {
+        /**
+         * date picking
+         */
         Calendar calendar=Calendar.getInstance();
         DatePickerDialog.OnDateSetListener dateSetListener=new DatePickerDialog.OnDateSetListener() {
             @Override
