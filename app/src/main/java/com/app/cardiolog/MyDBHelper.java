@@ -10,6 +10,9 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 
 public class MyDBHelper extends SQLiteOpenHelper {
+    /**
+     * giving database names
+     */
 
     private  Context context;
     private static  final String DATABASE_NAME="CardioLog.db"; //giving our database a name
@@ -33,6 +36,9 @@ public class MyDBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        /**
+         * setting the specification
+         */
         String query = "CREATE TABLE " + TABLE_NAME + " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COLUMN_SYS + " INTEGER, " +
                 COLUMN_DIA + " INTEGER, " +
@@ -48,8 +54,10 @@ public class MyDBHelper extends SQLiteOpenHelper {
       db.execSQL("DROP TABLE IF EXISTS "+ TABLE_NAME);
     }
 
-    public void addRecord(int sys,int dia,int bpm , String date ,String time , String comment){
-
+    public long addRecord(int sys,int dia,int bpm , String date ,String time , String comment){
+        /**
+         * adding record to database
+         */
         SQLiteDatabase db =this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(COLUMN_SYS,sys);
@@ -70,11 +78,14 @@ public class MyDBHelper extends SQLiteOpenHelper {
 
 
 
-
+return result;
 
     }
 
  Cursor readAllData(){
+     /**
+      * reading data
+      */
         String query = "SELECT * FROM "+TABLE_NAME;
         SQLiteDatabase db=this.getReadableDatabase();
         Cursor cursor =null;
@@ -85,6 +96,9 @@ public class MyDBHelper extends SQLiteOpenHelper {
  }
 
 public void updateData(String row_id,int sys,int dia,int bpm ,String date ,String comment ,String time){
+    /**
+     * updating data to database
+     */
 
  SQLiteDatabase db = this.getWritableDatabase();
  ContentValues cv = new ContentValues();
@@ -105,6 +119,9 @@ public void updateData(String row_id,int sys,int dia,int bpm ,String date ,Strin
  }
 
   public  void deleteOneRow(String row_id){
+      /**
+       * deleting row
+       */
         SQLiteDatabase db=this.getWritableDatabase();
         long result=db.delete(TABLE_NAME,"id=?", new String[]{row_id});
         if(result==-1){
@@ -113,6 +130,51 @@ public void updateData(String row_id,int sys,int dia,int bpm ,String date ,Strin
         else{
             Toast.makeText(context,"Deleted Successfully",Toast.LENGTH_SHORT).show();
         }
+    }
+    public boolean checkContent( String sys, String dias, String pulse, String date, String time, String comments) {
+        /**
+         * check content
+         */
+        SQLiteDatabase sqLiteDatabase =  this.getWritableDatabase();
+        String[] columns = {MyDBHelper.COLUMN_SYS, MyDBHelper.COLUMN_DIA, MyDBHelper.COLUMN_BPM, MyDBHelper.COLUMN_DATE, MyDBHelper.COLUMN_TIME, MyDBHelper.COLUMN_COMMENT};
+        Cursor cursor = sqLiteDatabase.query(MyDBHelper.TABLE_NAME, columns, MyDBHelper.COLUMN_ID+" = '"+"id"+"'", null, null, null, null);
+        while (cursor.moveToNext()) {
+            String i1 = String.valueOf(cursor.getColumnIndex(MyDBHelper.COLUMN_SYS));
+            String i2 = String.valueOf(cursor.getColumnIndex(MyDBHelper.COLUMN_DIA));
+            String i3 = String.valueOf(cursor.getColumnIndex(MyDBHelper.COLUMN_BPM));
+            String i4 = String.valueOf(cursor.getColumnIndex(MyDBHelper.COLUMN_DATE));
+            String i5 = String.valueOf(cursor.getColumnIndex(MyDBHelper.COLUMN_TIME));
+            String i6 = String.valueOf(cursor.getColumnIndex(MyDBHelper.COLUMN_COMMENT));
+
+            String sys1 = cursor.getString(Integer.parseInt(i1));
+            String dia1 = cursor.getString(Integer.parseInt(i2));
+            String pulse1 = cursor.getString(Integer.parseInt(i3));
+            String date1 = cursor.getString(Integer.parseInt(i4));
+            String time1 = cursor.getString(Integer.parseInt(i5));
+            String comm1 = cursor.getString(Integer.parseInt(i6));
+
+            if (sys != sys1 || dias != dia1  || pulse != pulse1  || date != date1 || time1 != time || comments != comm1) {
+                cursor.close();
+                return false;
+            }
+        }
+        cursor.close();
+        return true;
+    }
+
+    public boolean checkDataExistsOrNot(Long id) {
+        /**
+         * check data
+         */
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        String Query = "Select * from " + TABLE_NAME + " where " + id + " = " + Long.toString(id);
+        Cursor cursor = sqLiteDatabase.rawQuery(Query, null);
+        if (cursor.getCount() <= 0) {
+            cursor.close();
+            return false;
+        }
+        cursor.close();
+        return true;
     }
 
 }

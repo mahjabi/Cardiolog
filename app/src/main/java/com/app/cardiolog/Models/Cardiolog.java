@@ -7,62 +7,65 @@ import java.util.Timer;
 
 public class Cardiolog {
 
-   Date mDate;
+   String mDate,mTime;
 
-   Number Sys,Dia,Bpm;
+   Integer Sys,Dia,Bpm;
    String Comment;
 
-    public Cardiolog(Date date, Number sys, Number dia, Number bpm, String comment) {
+    public Cardiolog(String date, String time, Integer sys, Integer dia, Integer bpm, String comment) {
         mDate = date;
-
+        mTime = time;
         Sys = sys;
         Dia = dia;
         Bpm = bpm;
         Comment = comment;
     }
 
-    public Cardiolog(Date date,  Number sys, Number dia, Number bpm) {
+    public Cardiolog(String date, String time, Integer sys, Integer dia, Integer bpm) {
         mDate = date;
-
+        mTime = time;
         Sys = sys;
         Dia = dia;
         Bpm = bpm;
     }
 
-
-    public Date getDate() {
+    public String getDate() {
         return mDate;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         mDate = date;
     }
 
+    public String getTime() {
+        return mTime;
+    }
 
+    public void setTime(String time) {
+        mTime = time;
+    }
 
-
-
-    public Number getSys() {
+    public Integer getSys() {
         return Sys;
     }
 
-    public void setSys(Number sys) {
+    public void setSys(Integer sys) {
         Sys = sys;
     }
 
-    public Number getDia() {
+    public Integer getDia() {
         return Dia;
     }
 
-    public void setDia(Number dia) {
+    public void setDia(Integer dia) {
         Dia = dia;
     }
 
-    public Number getBpm() {
+    public Integer getBpm() {
         return Bpm;
     }
 
-    public void setBpm(Number bpm) {
+    public void setBpm(Integer bpm) {
         Bpm = bpm;
     }
 

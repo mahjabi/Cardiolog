@@ -13,7 +13,10 @@ import com.app.cardiolog.Adapter.CardiologAdapter;
 import com.app.cardiolog.Models.Cardiolog;
 
 import java.util.ArrayList;
-
+/**
+ * this class mainly implements the user interface of historyactivity
+ * this class also works as an interface between history and database helper
+ */
 public class HistoryActivity extends AppCompatActivity {
   RecyclerView mRecyclerView;
   ArrayList<Cardiolog>loglist;
@@ -22,6 +25,9 @@ public class HistoryActivity extends AppCompatActivity {
   ArrayList<String> log_id,sys,dia,bpm,date,time,comment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        /**
+         * this creates the history activity
+         */
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
         mRecyclerView = findViewById(R.id.recyclerView);
@@ -42,6 +48,9 @@ public class HistoryActivity extends AppCompatActivity {
  mRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
     }
     @Override
+    /**
+     * method of clicking back button to go to main activity
+     */
     public void onBackPressed(){
         Intent intent = new Intent(HistoryActivity.this,MainActivity.class);
         startActivity(intent);
@@ -50,6 +59,9 @@ public class HistoryActivity extends AppCompatActivity {
     }
 
     public void storeDataInArrays(){
+        /**
+         * store data in array
+         */
 
         Cursor cursor=myDB.readAllData();
 
