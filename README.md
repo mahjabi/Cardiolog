@@ -1,5 +1,6 @@
-# Cardiolog'=
-The app CardiacRecorder is a blood pressure and heart rate management app. It helps a user to keep track of his/her daily blood pressure and heart rate. The app assists user in data entry to avoid illegal input.Overall it is a simple app with the following features:-
+# Cardiolog
+
+The app Cardiolog is a blood pressure and heart rate management app. It helps a user to keep track of his/her daily blood pressure and heart rate. The app assists user in data entry to avoid illegal input.Overall it is a simple app with the following features:-
 
 1.Show a list of recorded measurements.
 
